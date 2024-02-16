@@ -1,4 +1,5 @@
 const { chromium } = require("playwright");
+const { splitString } = require("./splitString");
 
 async function evmBalance(walletAddress) {
   const browser = await chromium.launch({
@@ -17,7 +18,7 @@ async function evmBalance(walletAddress) {
 
   const divText = await page.textContent(".HeaderInfo_totalAssetInner__HyrdC");
   await browser.close();
-  return divText;
+  return splitString(divText);
 }
 
 module.exports = { evmBalance };
