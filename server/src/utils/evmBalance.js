@@ -1,3 +1,4 @@
+require("dotenv").config({ path: "../../.env" });
 const { chromium } = require("playwright");
 const { splitString } = require("./splitString");
 
@@ -16,9 +17,24 @@ async function evmBalance(walletAddress) {
   await page.goto(`https://debank.com/profile/${walletAddress}`);
   await page.waitForTimeout(5000);
 
-  const divText = await page.textContent(".HeaderInfo_totalAssetInner__HyrdC");
+  const balancePercent = await page.textContent(
+    ".HeaderInfo_totalAssetInner__HyrdC"
+  );
+  let splitObj = splitString(balancePercent);
+
   await browser.close();
-  return splitString(divText);
+
+  let evmObj = {
+    address: walletAddress,
+    balance: splitObj.balance,
+    change: splitObj.change,
+  };
+
+  return evmObj;
 }
+
+(async () => {
+  console.log(await evmBalance(process.env.eth1));
+})();
 
 module.exports = { evmBalance };
