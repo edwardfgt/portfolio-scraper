@@ -82,8 +82,4 @@ async function evmBalance(walletAddress) {
   return evmObj;
 }
 
-(async () => {
-  console.log(await evmBalance(process.env.eth1));
-})();
-
 module.exports = { evmBalance };
