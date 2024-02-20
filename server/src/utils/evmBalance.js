@@ -1,6 +1,7 @@
 require("dotenv").config({ path: "../../.env" });
 const { chromium } = require("playwright");
 const { splitString } = require("./splitString");
+const { updateWalletData } = require("./updateWalletdata");
 
 async function evmBalance(walletAddress) {
   const browser = await chromium.launch({
@@ -49,7 +50,7 @@ async function evmBalance(walletAddress) {
     }
   );
 
-  console.log(data);
+  //console.log(data);
 
   let splitObj = splitString(balancePercent);
 
@@ -62,6 +63,7 @@ async function evmBalance(walletAddress) {
     chains: data,
   };
 
+  updateWalletData(evmObj);
   return evmObj;
 }
 
