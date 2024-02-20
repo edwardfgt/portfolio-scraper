@@ -20,8 +20,6 @@ function getRandomUserAgent() {
   return userAgents[Math.floor(Math.random() * userAgents.length)];
 }
 
-// Use getRandomUserAgent() when setting the user agent for your requests
-
 async function evmBalance(walletAddress) {
   const browser = await chromium.launch({
     headless: true,

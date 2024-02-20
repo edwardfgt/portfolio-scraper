@@ -11,6 +11,7 @@ function splitString(str) {
     balance = str.substring(0, indexOfMinus);
     change = str.substring(indexOfMinus);
   } else {
+    console.log(`String used ${str}`);
     throw new Error("String format not recognized");
   }
 
