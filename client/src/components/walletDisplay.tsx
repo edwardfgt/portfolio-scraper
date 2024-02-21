@@ -57,7 +57,6 @@ const WalletsDisplay: React.FC = () => {
                             <div key={chainIndex} className="border border-gray-300 rounded p-2">
                                 <p className="font-semibold">{chain.name}</p>
                                 <p>{chain.value}</p>
-                                <p>Alloc: {chain.allocation}%</p>
                             </div>
                         ))}
                     </div>

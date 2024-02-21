@@ -56,8 +56,8 @@ async function evmBalance(walletAddress) {
         const valueSpan = item.querySelector(".AssetsOnChain_usdValue__I1B7X");
         const value = valueSpan?.textContent.trim();
 
-        const infoDiv = valueSpan?.parentNode;
-        const allocationMatch = infoDiv?.textContent.match(/(\d+)%/);
+        const fullDivText = item.textContent;
+        const allocationMatch = fullDivText.match(/(\d+)%/);
         const allocation = allocationMatch ? allocationMatch[1] : null;
 
         return { name, value, allocation };
