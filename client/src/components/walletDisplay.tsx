@@ -15,12 +15,17 @@ type Wallet = {
 
 const WalletsDisplay: React.FC = () => {
     const [wallets, setWallets] = useState<Wallet[]>([]);
+    const [totalBalance, setTotalBalance] = useState<string>('');
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useEffect(() => {
         fetch('http://localhost:3000/api/evm/portfolio')
             .then(response => response.json())
             .then(data => {
+                setTotalBalance(data.totalBalance);
+                delete data.totalBalance;
+
+
                 setWallets(Object.values(data));
                 setIsLoading(false);
             })
@@ -36,24 +41,27 @@ const WalletsDisplay: React.FC = () => {
 
     return (
         <div className="p-4">
-            {wallets.map((wallet, index) => (
-                <div key={index} className="border border-gray-200 rounded-lg p-4 mb-4">
-                    <h2 className="text-lg font-bold mb-2">Address: {wallet.address}</h2>
-                    <p>Balance: {wallet.balance}</p>
-                    <p>Change: {wallet.change}</p>
-                    <div className="mt-4">
-                        <h3 className="font-semibold">Chains:</h3>
-                        <ul>
-                            {wallet.chains.map((chain, chainIndex) => (
-                                <li key={chainIndex} className="ml-4 list-disc">
-                                    {chain.name}: {chain.value} (Allocation: {chain.allocation})
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                </div>
-            ))}
+        <div className="mb-6">
+            <h2 className="text-xl font-bold">Total Balance: {totalBalance}</h2>
         </div>
+        {wallets.map((wallet, index) => (
+            <div key={index} className="border border-gray-200 rounded-lg p-4 mb-4">
+                <h2 className="text-lg font-bold mb-2">Address: {wallet.address}</h2>
+                <p>Balance: {wallet.balance}</p>
+                <p>Change: {wallet.change}</p>
+                <div className="mt-4">
+                    <h3 className="font-semibold">Chains:</h3>
+                    <ul>
+                        {wallet.chains.map((chain, chainIndex) => (
+                            <li key={chainIndex} className="ml-4 list-disc">
+                                {chain.name}: {chain.value} (Allocation: {chain.allocation})
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            </div>
+        ))}
+    </div>
     );
 };
 
