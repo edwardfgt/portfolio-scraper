@@ -17,6 +17,7 @@ const WalletsDisplay: React.FC = () => {
     const [wallets, setWallets] = useState<Wallet[]>([]);
     const [totalBalance, setTotalBalance] = useState<string>('');
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [showAllChains, setShowAllChains] = useState<boolean>(false);
 
     useEffect(() => {
         fetch('http://localhost:3000/api/evm/portfolio')
@@ -24,8 +25,6 @@ const WalletsDisplay: React.FC = () => {
             .then(data => {
                 setTotalBalance(data.totalBalance);
                 delete data.totalBalance;
-
-
                 setWallets(Object.values(data));
                 setIsLoading(false);
             })
@@ -34,6 +33,10 @@ const WalletsDisplay: React.FC = () => {
                 setIsLoading(false);
             });
     }, []);
+
+    const toggleChainsDisplay = () => {
+        setShowAllChains(!showAllChains);
+    };
 
     if (isLoading) {
         return <div>Loading...</div>;
@@ -50,7 +53,7 @@ const WalletsDisplay: React.FC = () => {
                     <p>Balance: {wallet.balance}</p>
                     <p>Change: {wallet.change}</p>
                     <div className="mt-4 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                        {wallet.chains.map((chain, chainIndex) => (
+                        {(showAllChains ? wallet.chains : wallet.chains.slice(0, 8)).map((chain, chainIndex) => (
                             <div key={chainIndex} className="border border-gray-300 rounded p-2">
                                 <p className="font-semibold">{chain.name}</p>
                                 <p>{chain.value}</p>
@@ -58,6 +61,11 @@ const WalletsDisplay: React.FC = () => {
                             </div>
                         ))}
                     </div>
+                    {wallet.chains.length > 8 && (
+                        <button onClick={toggleChainsDisplay} className="mt-4 bg-blue-500 text-white py-2 px-4 rounded">
+                            {showAllChains ? 'View Less' : 'View More'}
+                        </button>
+                    )}
                 </div>
             ))}
         </div>
