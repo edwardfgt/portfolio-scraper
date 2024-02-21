@@ -41,27 +41,26 @@ const WalletsDisplay: React.FC = () => {
 
     return (
         <div className="p-4">
-        <div className="mb-6">
-            <h2 className="text-xl font-bold">Total Balance: {totalBalance}</h2>
-        </div>
-        {wallets.map((wallet, index) => (
-            <div key={index} className="border border-gray-200 rounded-lg p-4 mb-4">
-                <h2 className="text-lg font-bold mb-2">Address: {wallet.address}</h2>
-                <p>Balance: {wallet.balance}</p>
-                <p>Change: {wallet.change}</p>
-                <div className="mt-4">
-                    <h3 className="font-semibold">Chains:</h3>
-                    <ul>
-                        {wallet.chains.map((chain, chainIndex) => (
-                            <li key={chainIndex} className="ml-4 list-disc">
-                                {chain.name}: {chain.value} (Allocation: {chain.allocation})
-                            </li>
-                        ))}
-                    </ul>
-                </div>
+            <div className="mb-6">
+                <h2 className="text-xl font-bold">Total Balance: {totalBalance}</h2>
             </div>
-        ))}
-    </div>
+            {wallets.map((wallet, index) => (
+                <div key={index} className="border border-gray-200 rounded-lg p-4 mb-4">
+                    <h2 className="text-lg font-bold mb-2">Address: {wallet.address}</h2>
+                    <p>Balance: {wallet.balance}</p>
+                    <p>Change: {wallet.change}</p>
+                    <div className="mt-4 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                        {wallet.chains.map((chain, chainIndex) => (
+                            <div key={chainIndex} className="border border-gray-300 rounded p-2">
+                                <p className="font-semibold">{chain.name}</p>
+                                <p>{chain.value}</p>
+                                <p>Alloc: {chain.allocation}%</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            ))}
+        </div>
     );
 };
 
