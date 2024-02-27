@@ -3,7 +3,7 @@ const walletAddresses = require("../data/evmWallets.json");
 const fs = require("fs");
 const path = require("path");
 
-const filePath = "../data/evmData.json";
+const filePath = path.join(__dirname, "../data/evmData.json");
 
 async function processWallets(walletAddresses) {
   let totalBalance = 0;
@@ -36,4 +36,4 @@ function updateTotalBalance(totalBalance) {
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 }
 
-processWallets(walletAddresses);
+module.exports = { processWallets, updateTotalBalance };
