@@ -24,16 +24,18 @@ async function processWallets(walletAddresses) {
 }
 
 function updateTotalBalance(totalBalance) {
-  // Check if the file exists
-  if (!fs.existsSync(filePath)) {
-    console.error("File not found");
-    return;
-  }
+  try {
+    if (!fs.existsSync(filePath)) {
+      console.error("File not found");
+      return;
+    }
 
-  // Read the existing file
-  const data = JSON.parse(fs.readFileSync(filePath, "utf8"));
-  data.totalBalance = totalBalance;
-  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+    const data = JSON.parse(fs.readFileSync(filePath, "utf8"));
+    data.totalBalance = totalBalance;
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+  } catch (error) {
+    console.error("Error updating total balance:", error);
+  }
 }
 
 module.exports = { processWallets, updateTotalBalance };

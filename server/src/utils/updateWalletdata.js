@@ -1,11 +1,12 @@
 const fs = require("fs");
-const path = "../data/evmData.json";
+const path = require("path");
+const filePath = path.join(__dirname, "../data/evmData.json");
 
 function updateWalletData(evmObj) {
   let data = {};
 
-  if (fs.existsSync(path)) {
-    const fileContent = fs.readFileSync(path, "utf8");
+  if (fs.existsSync(filePath)) {
+    const fileContent = fs.readFileSync(filePath, "utf8");
     if (fileContent) {
       try {
         data = JSON.parse(fileContent);
@@ -17,7 +18,7 @@ function updateWalletData(evmObj) {
 
   data[evmObj.address] = evmObj;
 
-  fs.writeFileSync(path, JSON.stringify(data, null, 2)); // Formatting for readability
+  fs.writeFileSync(filePath, JSON.stringify(data, null, 2)); // Formatting for readability
 }
 
 module.exports = { updateWalletData };
