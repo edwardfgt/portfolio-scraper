@@ -18,7 +18,11 @@ function updateWalletData(evmObj) {
 
   data[evmObj.address] = evmObj;
 
-  fs.writeFileSync(filePath, JSON.stringify(data, null, 2)); // Formatting for readability
+  try {
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 2), { flag: "w" });
+  } catch (e) {
+    console.error("Error writing to file:", e);
+  }
 }
 
 module.exports = { updateWalletData };
