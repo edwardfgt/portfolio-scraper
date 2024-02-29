@@ -48,35 +48,48 @@ const WalletsDisplay: React.FC = () => {
     }
 
     const handleRefresh = async () => {
-        setIsLoading(true);
+        setButtonLoading(true);
         const startTime = Date.now();
     
         try {
-          await axios.post('http://localhost:3000/api/evm/refresh-balances');
-          setButtonLoading(false);
+            await axios.post('http://localhost:3000/api/evm/refresh-balances');
+            const response = await fetch('http://localhost:3000/api/evm/portfolio');
+            const data = await response.json();
+            setTotalBalance(data.totalBalance);
+            delete data.totalBalance;
+            setWallets(Object.values(data));
+            setIsLoading(true);
         } catch (error) {
-          console.error('There was an error making the request', error);
-          setButtonLoading(false);
+            console.error('There was an error making the request', error);
         }
     
         const endTime = Date.now();
         setCounter(Math.round((endTime - startTime) / 1000));
-      };
+        setButtonLoading(false);
+        setIsLoading(false);
+    };
+    
 
     return (
         <div className="p-4">
             <div className="mb-6">
                 <h2 className="text-xl font-bold">Total Balance: {totalBalance}</h2>
                 <div className="flex justify-end">
-                    <button 
-                        onClick={handleRefresh} 
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                        disabled={buttonLoading}
-                    >
-                        Refresh
-                    </button>
-      {isLoading && <p>Please wait, {counter} seconds...</p>}
-    </div>
+                <button 
+                    onClick={handleRefresh} 
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    disabled={buttonLoading}
+                >
+                    {buttonLoading ? (
+                        <>
+                            <i className="animate-spin"></i> Processing
+                        </>
+                    ) : (
+                        "Refresh"
+                    )}
+                </button>
+
+        </div>
             </div>
             {wallets.map((wallet, index) => (
                 <div key={index} className="border border-gray-200 rounded-lg p-4 mb-4">
